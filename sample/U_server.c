@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
                      sizeof(serv_addr.sun_family);
    if(bind(sockfd,(struct sockaddr *)&serv_addr,servlen)<0)
        error("binding socket"); 
-
+     while(1){
    listen(sockfd,5);
    clilen = sizeof(cli_addr);
    newsockfd = accept(
@@ -35,6 +35,7 @@ int main(int argc, char *argv[])
    write(1,buf,n);
    write(newsockfd,"I got your message\n",19);
    close(newsockfd);
+ }
    close(sockfd);
    return 0;
 }
