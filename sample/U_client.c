@@ -18,11 +18,12 @@ int main(int argc, char *argv[])
    strcpy(serv_addr.sun_path, argv[1]);
    servlen = strlen(serv_addr.sun_path) + 
                  sizeof(serv_addr.sun_family);
-   if ((sockfd = socket(AF_UNIX, SOCK_STREAM,0)) < 0)
+   if ((sockfd = socket(AF_UNIX, SOCK_STREAM,0)) < 0)//ソケットを作り、できていなかったら
        error("Creating socket");
    if (connect(sockfd, (struct sockaddr *) 
                          &serv_addr, servlen) < 0)
        error("Connecting");
+//     while(1){
    printf("Please enter your message: ");
    bzero(buffer,82);
    fgets(buffer,80,stdin);
@@ -30,6 +31,7 @@ int main(int argc, char *argv[])
    n=read(sockfd,buffer,80);
    printf("The return message was\n");
    write(1,buffer,n);
+//   }
    close(sockfd);
    return 0;
 }
