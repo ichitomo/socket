@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <sys/un.h>
 #include <stdio.h>
+#include <syslog.h>
+
 void error(const char *);
 int main(int argc, char *argv[])
 {
@@ -13,6 +15,8 @@ int main(int argc, char *argv[])
    socklen_t clilen;
    struct sockaddr_un  cli_addr, serv_addr;
    char buf[80];
+  // const int one = 1;
+  // setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(int));
 
    if ((sockfd = socket(AF_UNIX,SOCK_STREAM,0)) < 0)
        error("creating socket");
@@ -23,7 +27,9 @@ int main(int argc, char *argv[])
                      sizeof(serv_addr.sun_family);
    if(bind(sockfd,(struct sockaddr *)&serv_addr,servlen)<0)
        error("binding socket"); 
-
+    //while(1){
+     const int one = 1;
+    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(int));
    listen(sockfd,5);
    clilen = sizeof(cli_addr);
    newsockfd = accept(
@@ -33,14 +39,18 @@ int main(int argc, char *argv[])
    n=read(newsockfd,buf,80);
    printf("A connection has been established\n");
    write(1,buf,n);
-   write(newsockfd,"I got your message\n",19);
+   write(newsockfd,"I got your message\n",19);   
    close(newsockfd);
+ //}
    close(sockfd);
    return 0;
 }
 
 void error(const char *msg)
 {
+  // openlog("newsyslog", LOG_CONS | LOG_PID, LOG_USER);
+  // syslog(LOG_NOTICE, "logfile turned over (sample)");
+  // closelog();
     perror(msg);
     exit(0);
 }

@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     exit(1);
   }
 
-  sockfd = socket(AF_INET, SOCK_STREAM, 0);
+  sockfd = socket(AF_INET, SOCK_STREAM, 0);//ソケットの生成
   if (sockfd < 0) 
     error("ERROR opening socket");
   bzero((char *) &serv_addr, sizeof(serv_addr));
@@ -35,29 +35,29 @@ int main(int argc, char *argv[])
   serv_addr.sin_addr.s_addr = INADDR_ANY;
   serv_addr.sin_port = htons(portno);
   if (bind(sockfd, (struct sockaddr *) &serv_addr,
-	   sizeof(serv_addr)) < 0) 
+	   sizeof(serv_addr)) < 0) //socketの登録
     error("ERROR on binding");
 
-  while(1) {
-
-  listen(sockfd,5);
+  listen(sockfd,5);//ソケット接続準備
   clilen = sizeof(cli_addr);
 
+while(1) {
   newsockfd = accept(sockfd, 
 		     (struct sockaddr *) &cli_addr, 
-		     &clilen);
+		     &clilen);//socketの接続待機（接続要求）
   if (newsockfd < 0) 
     error("ERROR on accept");
   bzero(buffer,256);
-  n = read(newsockfd,buffer,255);
+  n = read(newsockfd,buffer,255);//messageを受信する
   if (n < 0) error("ERROR reading from socket");
   printf("Here is the message: %s\n",buffer);
   n = write(newsockfd,"I got your message",18);
   if (n < 0) error("ERROR writing to socket");
-  close(newsockfd);
-  }
 
+  close(newsockfd);//secket接続終わり
+}
   close(sockfd);
+
 
   return 0; 
 }
