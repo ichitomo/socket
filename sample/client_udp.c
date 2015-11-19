@@ -46,6 +46,8 @@ int main(int argc, char *argv[])
    if (n < 0) error("recvfrom");
    write(1,"Got an ack: ",12);
    write(1,buffer,n);
+   n = read(sock,buffer,255);
+   write(1,buffer,n);
    close(sock);
    return 0;
 }

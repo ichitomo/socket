@@ -10,6 +10,7 @@ while msg = STDIN.gets
       sock.write(msg)
       #サーバから返ってきたメッセージを表示する。
       print("return message:", sock.gets)
+      print("\n")
 end
 sock.close
 
