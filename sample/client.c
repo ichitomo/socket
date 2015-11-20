@@ -13,24 +13,24 @@ void error(const char *msg)
     exit(0);
 }
 
-int main(int argc, char *argv[])
+int main()
 {
     int sockfd, portno, n;
     struct sockaddr_in serv_addr;
     struct hostent *server;
 
     char buffer[256];
-    if (argc < 3) {//引数の総数が3つ以下の時
-       fprintf(stderr,"usage %s hostname port\n", argv[0]);//0番目の引数
-       exit(0);
-    }
-    portno = atoi(argv[2]);//2番目の引数＝ポート番号
+    // if (argc < 3) {//引数の総数が3つ以下の時
+    //    fprintf(stderr,"usage %s hostname port\n", argv[0]);//0番目の引数
+    //    exit(0);
+    // }
+    portno = atoi("9999");//2番目の引数＝ポート番号
     while(1){
  
         sockfd = socket(AF_INET, SOCK_STREAM, 0);//ソケットの生成
         if (sockfd < 0) 
             error("ERROR opening socket");
-        server = gethostbyname(argv[1]);//1番目の引数＝ホスト名
+        server = gethostbyname("localhost");//1番目の引数＝ホスト名
         if (server == NULL) {
             fprintf(stderr,"ERROR, no such host\n");
             exit(0);
